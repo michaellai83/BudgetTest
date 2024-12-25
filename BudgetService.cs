@@ -11,6 +11,15 @@ public class BudgetService
 
     public decimal Query(DateTime start, DateTime end)
     {
+        if (start < end)
+        {
+            var currentMonth = end.ToString("yyyyMM");
+            var budgets = _budgetRepo.GetAll();
+            var budget = budgets.SingleOrDefault(budget => budget.YearMonth.Equals(currentMonth));
+
+            return budget.Amount;
+        }
+
         return 0;
     }
 }

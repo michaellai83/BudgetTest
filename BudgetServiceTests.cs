@@ -18,7 +18,27 @@ public class BudgetServiceTests
     [Test]
     public void InvalidQuery()
     {
-        var result = _budgetService.Query(new DateTime(2024, 12, 2), new DateTime(2024, 12, 1));
-        Assert.That(result, Is.EqualTo(0m));
+        BudgetShouldBe(new DateTime(2024, 12, 2), new DateTime(2024, 12, 1), 0m);
+    }
+
+    [Test]
+    public void Query_full_month()
+    {
+        _budgetRepo.GetAll().Returns(new List<Budget>()
+        {
+            new Budget
+            {
+                YearMonth = "202412",
+                Amount = 31000
+            }
+        });
+
+        BudgetShouldBe(new DateTime(2024, 12, 1), new DateTime(2024, 12, 31), 31000m);
+    }
+
+    private void BudgetShouldBe(DateTime start, DateTime end, decimal expected)
+    {
+        var result = _budgetService.Query(start, end);
+        Assert.That(result, Is.EqualTo(expected));
     }
 }
