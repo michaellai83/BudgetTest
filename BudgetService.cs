@@ -15,15 +15,14 @@ public class BudgetService
         {
             var endYearMonth = end.ToString("yyyyMM");
             var budgets = _budgetRepo.GetAll();
-            var budget = budgets.SingleOrDefault(budget => budget.YearMonth.Equals(endYearMonth));
-
-            if (budget == null)
-            {
-                return 0m;
-            }
 
             if (start.ToString("yyyyMM") == endYearMonth)
             {
+                var budget = budgets.SingleOrDefault(budget => budget.YearMonth.Equals(endYearMonth));
+                if (budget == null)
+                {
+                    return 0m;
+                }
                 var days = (end - start).Days + 1;
 
                 return (decimal)budget.Amount * days / DateTime.DaysInMonth(end.Year, end.Month);
