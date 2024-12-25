@@ -35,8 +35,8 @@ public class BudgetServiceTests
 
         BudgetShouldBe(new DateTime(2024, 12, 1), new DateTime(2024, 12, 31), 31000m);
     }
-    
-    [Test]  
+
+    [Test]
     public void Query_partial_month()
     {
         _budgetRepo.GetAll().Returns(new List<Budget>()
@@ -49,6 +49,16 @@ public class BudgetServiceTests
         });
 
         BudgetShouldBe(new DateTime(2024, 12, 1), new DateTime(2024, 12, 2), 2000m);
+    }
+
+    [Test]
+    public void Query_partial_month_noData()
+    {
+        _budgetRepo.GetAll().Returns(new List<Budget>()
+        {
+        });
+
+        BudgetShouldBe(new DateTime(2024, 12, 1), new DateTime(2024, 12, 2), 0m);
     }
 
     private void BudgetShouldBe(DateTime start, DateTime end, decimal expected)
