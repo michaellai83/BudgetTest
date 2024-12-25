@@ -80,6 +80,30 @@ public class BudgetServiceTests
 
         BudgetShouldBe(new DateTime(2024, 11, 30), new DateTime(2024, 12, 1), 1100m);
     } 
+    [Test]
+    public void Query_over_more_month()
+    {
+        _budgetRepo.GetAll().Returns(new List<Budget>()
+        {
+            new Budget
+            {
+                YearMonth = "202410",
+                Amount = 310
+            },
+            new Budget
+            {
+                YearMonth = "202411",
+                Amount = 3000
+            },
+            new Budget
+            {
+                YearMonth = "202412",
+                Amount = 31000
+            }
+        });
+
+        BudgetShouldBe(new DateTime(2024, 10, 31), new DateTime(2024, 12, 1), 4010m);
+    } 
     
     private void BudgetShouldBe(DateTime start, DateTime end, decimal expected)
     {

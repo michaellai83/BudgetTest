@@ -29,11 +29,22 @@ public class BudgetService
                 return (decimal)budget.Amount * days / DateTime.DaysInMonth(end.Year, end.Month);
             }
 
+            
+            var overMonth = end.Month - start.Month > 1;
+            var totalAmount = 0m;
             var startAmount = GetStartOverlapAmount(start, budgets);
             var endAmount = GetEndOverlapAmount(end, budgets);
-
-
-            return startAmount + endAmount;
+            if (overMonth)
+            {
+                var currentMon = start.AddMonths(1);
+                while (currentMon < end)
+                {
+                    totalAmount += budgets.SingleOrDefault(budget => budget.YearMonth.Equals(currentMon.ToString("yyyyMM"))).Amount;
+                    currentMon = currentMon.AddMonths(1);
+                }
+            }
+            totalAmount = startAmount + endAmount + totalAmount;
+            return totalAmount;
         }
 
         return 0;
