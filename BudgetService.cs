@@ -8,4 +8,9 @@ public class BudgetService
     {
         _budgetRepo = budgetRepo;
     }
+
+    public decimal Query(DateTime start, DateTime end)
+    {
+        return 0;
+    }
 }

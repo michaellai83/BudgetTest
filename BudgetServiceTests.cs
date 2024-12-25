@@ -2,6 +2,7 @@
 
 namespace BudgetTest;
 
+[TestFixture]
 public class BudgetServiceTests
 {
     private IBudgetRepo? _budgetRepo;
@@ -15,8 +16,9 @@ public class BudgetServiceTests
     }
 
     [Test]
-    public void Test1()
+    public void InvalidQuery()
     {
-        Assert.Pass();
+        var result = _budgetService.Query(new DateTime(2024, 12, 2), new DateTime(2024, 12, 1));
+        Assert.That(result, Is.EqualTo(0m));
     }
 }
