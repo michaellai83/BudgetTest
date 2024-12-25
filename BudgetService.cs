@@ -13,9 +13,19 @@ public class BudgetService
     {
         if (start < end)
         {
-            var currentMonth = end.ToString("yyyyMM");
+            var startYearMonth = start.ToString("yyyyMM");
+            var endYearMonth = end.ToString("yyyyMM");
             var budgets = _budgetRepo.GetAll();
-            var budget = budgets.SingleOrDefault(budget => budget.YearMonth.Equals(currentMonth));
+            var budget = budgets.SingleOrDefault(budget => budget.YearMonth.Equals(endYearMonth));
+            if (startYearMonth == endYearMonth)
+            {
+                var days = (end - start).Days + 1;
+
+                return  budget.Amount * days / DateTime.DaysInMonth(end.Year, end.Month);
+            }
+            
+            
+            
 
             return budget.Amount;
         }
